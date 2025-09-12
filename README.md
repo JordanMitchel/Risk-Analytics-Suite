@@ -82,6 +82,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📬 Contact
 
-Your Name - [@YourTwitterHandle](https://twitter.com/YourTwitterHandle) - your.email@example.com
+Your Name - jmitchel24@gmail.com
 
-Project Link: [https://github.com/your-username/your-repository](https://github.com/your-username/your-repository)
+Project Link: [https://github.com/JordanMitchel/Fixed-Income-Risk-Dashboard](https://github.com/JordanMitchel/Fixed-Income-Risk-Dashboard)
