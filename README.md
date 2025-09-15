@@ -21,6 +21,35 @@ This application showcases a robust architecture for integrating complex financi
 *   **Modern Web Stack:** A full-stack solution featuring a high-performance backend (Python/FastAPI) and a modern, responsive frontend (React/TypeScript).
 *   **Containerized Architecture:** Uses Docker to ensure a consistent and isolated development, testing, and production environment.
 
+## 📊 System Flow
+
+This section outlines the primary data and processing workflow within the application.
+
+### Data Ingestion and Storage
+*   **Pull:** Retrieves market data from sources like the FRED (Federal Reserve Economic Data) API. Python is used for prototyping data models before production implementation.
+*   **Store:** Persists the market data (e.g., from FRED) and mock portfolio data into a MongoDB database for efficient access.
+
+### Calculation and Analysis
+*   **Load:** Loads the market data from MongoDB into Python objects for processing.
+*   **QuantLib Processing:** Uses the QuantLib library to build yield curves from various market instruments, such as bonds and interest rate swaps.
+*   **Bootstrapping:** The QuantLib engine bootstraps zero rates from the market prices and cash flows of instruments to construct a precise yield curve.
+*   **Pricing:** Instruments are priced based on the bootstrapped yield curve at their respective maturities.
+*   **Risk Metrics:** Calculates key risk metrics:
+    *   **DV01:** Measures the price sensitivity to a one basis point (1bp) parallel shift of the entire yield curve.
+    *   **Key-Rate DV01:** Measures the price sensitivity to 1bp shifts at specific, critical maturities.
+*   **Interpolation:** Fills in missing maturities for the yield curve using appropriate methods:
+    *   **Short-term:** Forward Rate Agreements (FRAs).
+    *   **Mid-term:** Swap interpolation.
+    *   **Long-term:** Liquid government bonds.
+*   **Data Source:** Historical data is sourced from MongoDB, while live rates are retrieved from a cache for speed.
+
+### API Endpoints (Display)
+The backend exposes several API endpoints for the frontend to consume data:
+*   `GET /yield_curve_for_inst_by_date/{month}/{inst_type}/{inst_id}`: Fetches the yield curve for a specific instrument on a given date.
+*   `GET /all_yield_curve_by_date/{month}`: Retrieves all yield curves for a given month.
+*   `GET /portfolio/{portfolio_id}/risk`: Provides aggregated risk metrics for a specific portfolio.
+*   `GET /portfolio/{portfolio_id}/{instrument_type}`: Returns portfolio data filtered by instrument type.
+
 ## 🛠️ Tech Stack
 
 ### Backend
