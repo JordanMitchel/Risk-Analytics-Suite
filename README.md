@@ -1,72 +1,122 @@
-# Fixed-Income-Risk-Dashboard
-A full-stack risk management dashboard for fixed income portfolios, built with Python + QuantLib + React.
+# 📊 Risk Analytics Suite  
+*A modular risk management platform built with Python + QuantLib + React.*  
 
-# Fixed Income Portfolio Risk Dashboard
+This suite brings together **three core risk modules**:  
+1. **Fixed Income Portfolio Risk Dashboard** → Yield Curves, DV01, Exposures  
+2. **Concentration Risk Monitor** → Market Share & Liquidity Risk  
+3. **Monte Carlo VaR Engine** → Quantile-based Loss Estimates (VaR & ES)  
 
-[![Project Status: In Development](https://img.shields.io/badge/Status-In%20Development-yellow)](https://github.com/badges/shields)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+Each module is designed to plug into a shared API and visualization layer, providing traders, risk managers, and compliance officers with complementary perspectives on portfolio risk.  
 
-This project is a full-stack, interactive dashboard for fixed-income portfolio risk management. It integrates advanced quantitative finance analytics powered by QuantLib with a modern, real-time web interface built with React.
+---
 
-## 🚀 Project Overview
+## 1️⃣ Fixed Income Portfolio Risk Dashboard  
+**Project Status**: In Development  
+**License**: MIT  
 
-This application showcases a robust architecture for integrating complex financial models with a highly responsive user interface. The system is designed to provide portfolio managers and risk analysts with a real-time, consolidated view of key risk metrics.
+This project is a full-stack, interactive dashboard for fixed-income portfolio risk management. It integrates advanced quantitative finance analytics powered by QuantLib with a modern, real-time web interface built with React.  
 
-## ✨ Features
+### 🚀 Project Overview  
+Provides portfolio managers and risk analysts with a consolidated view of **yield curves, DV01, and notional exposures**, updated in real time.  
 
-*   **Risk Analytics:** Perform key risk calculations, including DV01, duration, and convexity, on fixed-income portfolios.
-*   **Interactive Visualizations:** Dynamically display financial data through interactive charts and tables using Recharts and Plotly.
-*   **Portfolio Aggregation:** Aggregate risk metrics at the portfolio level for a complete risk picture.
-*   **Market Data Processing:** Bootstraps yield curves from market instruments to derive accurate risk measures.
-*   **Modern Web Stack:** A full-stack solution featuring a high-performance backend (Python/FastAPI) and a modern, responsive frontend (React/TypeScript).
-*   **Containerized Architecture:** Uses Docker to ensure a consistent and isolated development, testing, and production environment.
+### ✨ Features  
+- **Risk Analytics**: DV01, key-rate DV01, duration, and convexity on bonds and portfolios.  
+- **Interactive Visualizations**: Yield curves and sensitivities shown dynamically with Recharts/Plotly.  
+- **Portfolio Aggregation**: Consolidated fixed income risk measures across holdings.  
+- **Market Data Processing**: Yield curve bootstrapping from deposits, futures, swaps, and bonds.  
+- **Modern Web Stack**: Python (FastAPI, QuantLib) backend + React/TypeScript frontend.  
+- **Containerized Architecture**: Dockerized setup for consistent deployment.  
 
-## 📊 System Flow
+---
 
-This section outlines the primary data and processing workflow within the application.
+## 2️⃣ Concentration Risk Monitor  
+**Project Status**: In Development  
+**License**: MIT  
 
-### Data Ingestion and Storage
-*   **Pull:** Retrieves market data from sources like the FRED (Federal Reserve Economic Data) API. Python is used for prototyping data models before production implementation.
-*   **Store:** Persists the market data (e.g., from FRED) and mock portfolio data into a MongoDB database for efficient access.
+This module monitors **liquidity and market concentration risk**, assessing whether a portfolio or trader holds too large a share of a given market. It helps identify **market impact risk** and **regulatory threshold breaches**.  
 
-### Calculation and Analysis
-*   **Load:** Loads the market data from MongoDB into Python objects for processing.
-*   **QuantLib Processing:** Uses the QuantLib library to build yield curves from various market instruments, such as bonds and interest rate swaps.
-*   **Bootstrapping:** The QuantLib engine bootstraps zero rates from the market prices and cash flows of instruments to construct a precise yield curve.
-*   **Pricing:** Instruments are priced based on the bootstrapped yield curve at their respective maturities.
-*   **Risk Metrics:** Calculates key risk metrics:
-    *   **DV01:** Measures the price sensitivity to a one basis point (1bp) parallel shift of the entire yield curve.
-    *   **Key-Rate DV01:** Measures the price sensitivity to 1bp shifts at specific, critical maturities.
-*   **Interpolation:** Fills in missing maturities for the yield curve using appropriate methods:
-    *   **Short-term:** Forward Rate Agreements (FRAs).
-    *   **Mid-term:** Swap interpolation.
-    *   **Long-term:** Liquid government bonds.
-*   **Data Source:** Historical data is sourced from MongoDB, while live rates are retrieved from a cache for speed.
+### 🚀 Project Overview  
+Provides traders and compliance teams with **real-time insights into market share exposure**, using market-wide trade and volume data compared against internal positions.  
 
-### API Endpoints (Display)
-The backend exposes several API endpoints for the frontend to consume data:
-*   `GET /yield_curve_for_inst_by_date/{month}/{inst_type}/{inst_id}`: Fetches the yield curve for a specific instrument on a given date.
-*   `GET /all_yield_curve_by_date/{month}`: Retrieves all yield curves for a given month.
-*   `GET /portfolio/{portfolio_id}/risk`: Provides aggregated risk metrics for a specific portfolio.
-*   `GET /portfolio/{portfolio_id}/{instrument_type}`: Returns portfolio data filtered by instrument type.
+### ✨ Features  
+- **Market Share Metrics**: % of market volume, open interest, and participation vs ADV.  
+- **Liquidity Risk**: Detects when positions dominate daily market flows.  
+- **Concentration Indices**: HHI (Herfindahl-Hirschman Index) for position spread.  
+- **Threshold Alerts**: Configurable alerts when crossing 10%, 25% market share.  
+- **APIs**: Access concentration reports at instrument or portfolio level.  
+- **Dashboard Visuals**: Heatmaps and charts to track concentration risk across instruments.  
 
-## 🛠️ Tech Stack
+---
 
-### Backend
-*   **Python:** The core language for the backend service.
-*   **FastAPI:** A high-performance web framework for creating the risk calculation APIs.
-*   **QuantLib:** A powerful C++ library for quantitative finance, exposed to Python to perform complex calculations.
+## 3️⃣ Monte Carlo VaR Engine  
+**Project Status**: In Development  
+**License**: MIT  
 
-### Frontend
-*   **React:** A JavaScript library for building the user interface.
-*   **TypeScript:** Used for type-safe and more robust frontend development.
-*   **Recharts / Plotly:** Libraries for creating interactive and customizable charts.
+This module implements a **Monte Carlo simulation engine** to compute Value-at-Risk (VaR) and Expected Shortfall (ES) for multi-asset portfolios.  
 
-### Infrastructure
-*   **Docker:** Used to containerize the backend and frontend services, simplifying setup and deployment.
-*   **JSON Schemas:** Enforces a clear and standardized contract between the frontend and backend APIs.
-*   **CI/CD:** Prepared for automated continuous integration and deployment with GitHub Actions or GitLab CI.
+### 🚀 Project Overview  
+Uses simulated market scenarios to estimate potential portfolio losses at chosen confidence levels (95%, 99%), giving risk managers a **probabilistic view of downside risk**.  
 
+### ✨ Features  
+- **Monte Carlo Simulation**: Generate thousands of market scenarios based on covariance and volatility estimates.  
+- **VaR & ES**: Compute 95%/99% quantile VaR and Expected Shortfall.  
+- **Flexible Inputs**: Works with equities, bonds, FX, and rates.  
+- **APIs**: Retrieve VaR metrics and P&L distributions programmatically.  
+- **Interactive Visuals**: Histogram of simulated losses and tail risk exposure.  
+- **Scalable Compute**: Parallelized simulation for large scenario counts.  
+
+---
+
+## 🛠️ Tech Stack  
+
+### **Backend**  
+- **Python**: Core language for risk engines, data processing, and backend services.  
+- **FastAPI**: High-performance web framework to expose risk calculation APIs.  
+- **QuantLib (C++ / Python bindings)**: Industry-standard quantitative finance library for yield curves, bond pricing, and risk measures.  
+- **NumPy / Pandas / SciPy**: Numerical computing and statistical analysis, powering Monte Carlo simulations and matrix operations.  
+- **C++ Extensions**: For performance-critical routines in curve construction and simulation.  
+
+### **Frontend**  
+- **React**: JavaScript library for building a responsive and modular user interface.  
+- **TypeScript**: Type-safe, robust frontend development.  
+- **Recharts / Plotly**: For interactive yield curve plots, VaR histograms, and heatmaps of concentration risk.  
+- **TailwindCSS**: Utility-first CSS framework for clean and modern UI styling.  
+
+### **Database / Data Layer**  
+- **MongoDB**: Stores market data, portfolio holdings, yield curves, and simulation results.  
+- **JSON Schemas**: Enforce a standardized contract between backend APIs and frontend consumers.  
+- **External APIs**:  
+  - **FRED API** → Free economic data (Treasury yields, benchmarks).  
+  - **Market / Exchange APIs** → For trading volumes and open interest (concentration risk).  
+  - **Mock Portfolio Generator** → For testing and backfilling scenarios.  
+
+### **Infrastructure**  
+- **Docker**: Containerization for backend and frontend services, ensuring consistent dev/prod environments.  
+- **CI/CD Pipelines**: GitHub Actions or GitLab CI for automated testing, build, and deployment.  
+- **Kubernetes (optional future extension)**: Orchestration for scaling Monte Carlo simulations and risk services.  
+- **Logging & Monitoring**: Structured logs via Python’s `logging` + Prometheus/Grafana for risk service metrics.  
+
+---
+
+## 🔹 Example Use Cases  
+- **Fixed Income Desk:** Stress-test portfolio DV01 under yield curve shifts.  
+- **Compliance / Risk:** Identify outsized positions that move markets.  
+- **Risk Management:** Report 99% Monte Carlo VaR to senior management.  
+
+---
+
+## 🔹 Future Extensions  
+- Stress testing (historical scenarios, macro shocks).  
+- Liquidity-adjusted VaR (L-VaR).  
+- Machine learning models for curve interpolation & risk forecasting.  
+- Unified reporting dashboard across all three modules.  
+
+---
+
+⚡ With this Risk Analytics Suite, you gain **three orthogonal lenses** on portfolio risk:  
+- **Sensitivity (DV01 & Yield Curves)**  
+- **Concentration (Market Share Risk)**  
+- **Probabilistic Loss (Monte Carlo VaR)** 
 ## 📦 Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
