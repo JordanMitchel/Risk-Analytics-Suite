@@ -4,7 +4,7 @@
 This suite brings together **three core risk modules**:  
 1. **Fixed Income Portfolio Risk Dashboard** → Yield Curves, DV01, Exposures  
 2. **Concentration Risk Monitor** → Market Share & Liquidity Risk  
-3. **Monte Carlo VaR Engine** → Quantile-based Loss Estimates (VaR & ES)  
+3. **Monte Carlo VaR Engine (with GARCH)** → Quantile-based Loss Estimates (VaR & ES)  
 
 Each module is designed to plug into a shared API and visualization layer, providing traders, risk managers, and compliance officers with complementary perspectives on portfolio risk.  
 
@@ -24,6 +24,7 @@ Provides portfolio managers and risk analysts with a consolidated view of **yiel
 - **Interactive Visualizations**: Yield curves and sensitivities shown dynamically with Recharts/Plotly.  
 - **Portfolio Aggregation**: Consolidated fixed income risk measures across holdings.  
 - **Market Data Processing**: Yield curve bootstrapping from deposits, futures, swaps, and bonds.  
+- **Volatility Overlays**: Incorporates **GARCH-based volatility forecasts** to stress-test interest rate sensitivity under varying market regimes.  
 - **Modern Web Stack**: Python (FastAPI, QuantLib) backend + React/TypeScript frontend.  
 - **Containerized Architecture**: Dockerized setup for consistent deployment.  
 
@@ -45,10 +46,11 @@ Provides traders and compliance teams with **real-time insights into market shar
 - **Threshold Alerts**: Configurable alerts when crossing 10%, 25% market share.  
 - **APIs**: Access concentration reports at instrument or portfolio level.  
 - **Dashboard Visuals**: Heatmaps and charts to track concentration risk across instruments.  
+- **Volatility Context**: Adjusts alerts dynamically if **GARCH forecasts predict elevated volatility**, highlighting times when concentration risk is most dangerous.  
 
 ---
 
-## 3️⃣ Monte Carlo VaR Engine  
+## 3️⃣ Monte Carlo VaR Engine (with GARCH)  
 **Project Status**: In Development  
 **License**: MIT  
 
@@ -60,6 +62,10 @@ Uses simulated market scenarios to estimate potential portfolio losses at chosen
 ### ✨ Features  
 - **Monte Carlo Simulation**: Generate thousands of market scenarios based on covariance and volatility estimates.  
 - **VaR & ES**: Compute 95%/99% quantile VaR and Expected Shortfall.  
+- **GARCH Volatility Forecasting**:  
+  - Captures **volatility clustering** often seen in markets.  
+  - Provides **time-varying volatility inputs** into Monte Carlo simulations.  
+  - Extensible to **multivariate/DCC-GARCH** for modeling correlations.  
 - **Flexible Inputs**: Works with equities, bonds, FX, and rates.  
 - **APIs**: Retrieve VaR metrics and P&L distributions programmatically.  
 - **Interactive Visuals**: Histogram of simulated losses and tail risk exposure.  
@@ -73,7 +79,8 @@ Uses simulated market scenarios to estimate potential portfolio losses at chosen
 - **Python**: Core language for risk engines, data processing, and backend services.  
 - **FastAPI**: High-performance web framework to expose risk calculation APIs.  
 - **QuantLib (C++ / Python bindings)**: Industry-standard quantitative finance library for yield curves, bond pricing, and risk measures.  
-- **NumPy / Pandas / SciPy**: Numerical computing and statistical analysis, powering Monte Carlo simulations and matrix operations.  
+- **arch**: GARCH volatility forecasting library.  
+- **NumPy / Pandas / SciPy**: Numerical computing and statistical analysis.  
 - **C++ Extensions**: For performance-critical routines in curve construction and simulation.  
 
 ### **Frontend**  
@@ -91,10 +98,10 @@ Uses simulated market scenarios to estimate potential portfolio losses at chosen
   - **Mock Portfolio Generator** → For testing and backfilling scenarios.  
 
 ### **Infrastructure**  
-- **Docker**: Containerization for backend and frontend services, ensuring consistent dev/prod environments.  
+- **Docker**: Containerization for backend and frontend services.  
 - **CI/CD Pipelines**: GitHub Actions or GitLab CI for automated testing, build, and deployment.  
 - **Kubernetes (optional future extension)**: Orchestration for scaling Monte Carlo simulations and risk services.  
-- **Logging & Monitoring**: Structured logs via Python’s `logging` + Prometheus/Grafana for risk service metrics.  
+- **Logging & Monitoring**: Structured logs via Python’s `logging` + Prometheus/Grafana for metrics.  
 
 ---
 
@@ -102,10 +109,45 @@ Uses simulated market scenarios to estimate potential portfolio losses at chosen
 - **Fixed Income Desk:** Stress-test portfolio DV01 under yield curve shifts.  
 - **Compliance / Risk:** Identify outsized positions that move markets.  
 - **Risk Management:** Report 99% Monte Carlo VaR to senior management.  
+- **Research:** Fit GARCH models to interest rates or FX returns to test volatility persistence.  
+
+---
+
+## 📘 What is GARCH?  
+
+**GARCH (Generalized Autoregressive Conditional Heteroskedasticity)** is a statistical model that estimates **time-varying volatility** in financial markets.  
+
+Key ideas:  
+- Volatility is not constant — markets experience **clusters of high and low volatility**.  
+- GARCH uses past **returns and past volatility** to forecast future volatility.  
+- GARCH(1,1) is the most common form, balancing simplicity with accuracy.  
+
+### 🔢 Formula (GARCH(1,1))  
+
+The conditional variance (σ²ₜ) is modeled as:  
+
+$$
+\sigma_t^2 = \omega + \alpha \cdot \varepsilon_{t-1}^2 + \beta \cdot \sigma_{t-1}^2
+$$  
+
+Where:  
+- **σ²ₜ** = forecast variance at time *t*  
+- **ω** = long-run variance (baseline level of volatility)  
+- **α** = weight on yesterday’s squared shock (**ε²**) → “news” impact  
+- **β** = weight on yesterday’s variance (**σ²**) → “volatility persistence”  
+
+### 📈 Why use GARCH in this suite?  
+- In **Monte Carlo VaR Engine** → feeds **time-varying volatility forecasts** into simulations, improving tail risk accuracy.  
+- In **Fixed Income Dashboard** → overlays volatility-adjusted DV01 sensitivity under turbulent conditions.  
+- In **Concentration Risk Monitor** → adjusts alerts dynamically when GARCH predicts volatility spikes, highlighting periods when concentrated positions are riskiest.  
+
+This makes GARCH especially valuable for **risk managers and researchers** seeking realistic modeling of volatility dynamics.  
+
 
 ---
 
 ## 🔹 Future Extensions  
+- **DCC-GARCH** for modeling time-varying correlations.  
 - Stress testing (historical scenarios, macro shocks).  
 - Liquidity-adjusted VaR (L-VaR).  
 - Machine learning models for curve interpolation & risk forecasting.  
@@ -116,51 +158,21 @@ Uses simulated market scenarios to estimate potential portfolio losses at chosen
 ⚡ With this Risk Analytics Suite, you gain **three orthogonal lenses** on portfolio risk:  
 - **Sensitivity (DV01 & Yield Curves)**  
 - **Concentration (Market Share Risk)**  
-- **Probabilistic Loss (Monte Carlo VaR)** 
-## 📦 Getting Started
+- **Probabilistic Loss (Monte Carlo VaR with GARCH)**  
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+---
 
-### Prerequisites
-Make sure you have the following installed:
-*   [Git](https://git-scm.com/)
-*   [Docker](https://www.docker.com/get-started)
-*   [Docker Compose](https://docs.docker.com/compose/install/)
+## 📦 Getting Started  
 
-### Installation
+### Prerequisites  
+Make sure you have the following installed:  
+* [Git](https://git-scm.com/)  
+* [Docker](https://www.docker.com/get-started)  
+* [Docker Compose](https://docs.docker.com/compose/install/)  
 
-1.  **Clone the repository:**
-    ```sh
-    git clone https://github.com/your-username/your-repository.git
-    cd your-repository
-    ```
+### Installation  
 
-2.  **Start the application with Docker Compose:**
-    ```sh
-    docker-compose up --build
-    ```
-    This command will build the Docker images for both the backend and frontend and start the application.
-
-3.  **Access the application:**
-    *   **Frontend:** Navigate to `http://localhost:3000` in your web browser.
-    *   **Backend API:** The FastAPI service will be running on `http://localhost:8000`. You can view the automatically generated API documentation at `http://localhost:8000/docs`.
-
-## 🤝 Contributing
-
-Contributions are what make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1.  Fork the Project.
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the Branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
-
-## 📝 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## 📬 Contact
-
-Your Name - jmitchel24@gmail.com
-
-Project Link: [https://github.com/JordanMitchel/Fixed-Income-Risk-Dashboard](https://github.com/JordanMitchel/Fixed-Income-Risk-Dashboard)
+1. **Clone the repository:**  
+   ```sh
+   git clone https://github.com/your-username/your-repository.git
+   cd your-repository
