@@ -1,179 +1,233 @@
-# 📊 Risk Analytics Suite  
-*A modular risk management platform built with Python + QuantLib + React.*  
+# 📊 Risk Analytics Suite
 
-This suite brings together **three core risk modules**:  
-1. **Fixed Income Portfolio Risk Dashboard** → Yield Curves, DV01, Exposures  
-2. **Concentration Risk Monitor** → Market Share & Liquidity Risk  
-3. **Monte Carlo VaR Engine (with GARCH)** → Quantile-based Loss Estimates (VaR & ES)  
+<div align="center">
 
-Each module is designed to plug into a shared API and visualization layer, providing traders, risk managers, and compliance officers with complementary perspectives on portfolio risk.  
+*A production-style portfolio analytics and quantitative risk management platform built with Python, FastAPI, PostgreSQL, QuantLib and React.*
 
----
+![Python](https://img.shields.io/badge/Python-3.13-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-red)
+![Alembic](https://img.shields.io/badge/Alembic-Migrations-green)
+![Docker](https://img.shields.io/badge/Docker-Container-blue)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-## 1️⃣ Fixed Income Portfolio Risk Dashboard  
-**Project Status**: In Development  
-**License**: MIT  
-
-This project is a full-stack, interactive dashboard for fixed-income portfolio risk management. It integrates advanced quantitative finance analytics powered by QuantLib with a modern, real-time web interface built with React.  
-
-### 🚀 Project Overview  
-Provides portfolio managers and risk analysts with a consolidated view of **yield curves, DV01, and notional exposures**, updated in real time.  
-
-### ✨ Features  
-- **Risk Analytics**: DV01, key-rate DV01, duration, and convexity on bonds and portfolios.  
-- **Interactive Visualizations**: Yield curves and sensitivities shown dynamically with Recharts/Plotly.  
-- **Portfolio Aggregation**: Consolidated fixed income risk measures across holdings.  
-- **Market Data Processing**: Yield curve bootstrapping from deposits, futures, swaps, and bonds.  
-- **Volatility Overlays**: Incorporates **GARCH-based volatility forecasts** to stress-test interest rate sensitivity under varying market regimes.  
-- **Modern Web Stack**: Python (FastAPI, QuantLib) backend + Plotly frontend.  
-- **Containerized Architecture**: Dockerized setup for consistent deployment.  
+</div>
 
 ---
 
-## 2️⃣ Concentration Risk Monitor  
-**Project Status**: In Development  
-**License**: MIT  
+## Overview
 
-This module monitors **liquidity and market concentration risk**, assessing whether a portfolio or trader holds too large a share of a given market. It helps identify **market impact risk** and **regulatory threshold breaches**.  
+Risk Analytics Suite is a modular portfolio analytics and quantitative risk management platform inspired by systems used by investment banks, hedge funds and asset managers.
 
-### 🚀 Project Overview  
-Provides traders and compliance teams with **real-time insights into market share exposure**, using market-wide trade and volume data compared against internal positions.  
+The platform is designed to support the complete portfolio workflow:
 
-### ✨ Features  
-- **Market Share Metrics**: % of market volume, open interest, and participation vs ADV.  
-- **Liquidity Risk**: Detects when positions dominate daily market flows.  
-- **Concentration Indices**: HHI (Herfindahl-Hirschman Index) for position spread.  
-- **Threshold Alerts**: Configurable alerts when crossing 10%, 25% market share.  
-- **APIs**: Access concentration reports at instrument or portfolio level.  
-- **Dashboard Visuals**: Heatmaps and charts to track concentration risk across instruments.  
-- **Volatility Context**: Adjusts alerts dynamically if **GARCH forecasts predict elevated volatility**, highlighting times when concentration risk is most dangerous.  
+```text
+Portfolio Sources
+        ↓
+Portfolio Management
+        ↓
+Market Data
+        ↓
+Portfolio Analytics
+        ↓
+Pricing and Risk
+        ↓
+Stress Testing
+        ↓
+Interactive Dashboard
+```
 
----
+The project combines production-style software engineering with practical quantitative finance techniques suitable for front-office, quant developer and risk engineering roles.
 
-## 3️⃣ Monte Carlo VaR Engine (with GARCH)  
-**Project Status**: In Development  
-**License**: MIT  
+## Current capabilities
 
-This module implements a **Monte Carlo simulation engine** to compute Value-at-Risk (VaR) and Expected Shortfall (ES) for multi-asset portfolios.  
+- FastAPI backend
+- PostgreSQL persistence
+- SQLAlchemy ORM
+- Alembic migrations
+- Pydantic validation
+- Repository and service layers
+- Portfolio creation and retrieval
+- Duplicate portfolio validation
+- Currency normalisation
+- Swagger and OpenAPI documentation
+- Docker-based local database setup
 
-### 🚀 Project Overview  
-Uses simulated market scenarios to estimate potential portfolio losses at chosen confidence levels (95%, 99%), giving risk managers a **probabilistic view of downside risk**.  
+## Planned capabilities
 
-### ✨ Features  
-- **Monte Carlo Simulation**: Generate thousands of market scenarios based on covariance and volatility estimates.  
-- **VaR & ES**: Compute 95%/99% quantile VaR and Expected Shortfall.  
-- **GARCH Volatility Forecasting**:  
-  - Captures **volatility clustering** often seen in markets.  
-  - Provides **time-varying volatility inputs** into Monte Carlo simulations.  
-  - Extensible to **multivariate/DCC-GARCH** for modeling correlations.  
-- **Flexible Inputs**: Works with equities, bonds, FX, and rates.  
-- **APIs**: Retrieve VaR metrics and P&L distributions programmatically.  
-- **Interactive Visuals**: Histogram of simulated losses and tail risk exposure.  
-- **Scalable Compute**: Parallelized simulation for large scenario counts.  
+- CSV portfolio import using Pandas
+- Alpaca portfolio synchronisation
+- Freetrade activity import
+- Historical market data
+- Portfolio valuation and P&L
+- Exposure and concentration analytics
+- Yield curves and fixed-income sensitivities
+- Historical, parametric and Monte Carlo VaR
+- Expected Shortfall
+- Scenario analysis and stress testing
+- React and Plotly dashboard
 
----
+## Technology stack
 
-## 🛠️ Tech Stack  
+### Backend
 
-### **Backend**  
-- **Python**: Core language for risk engines, data processing, and backend services.  
-- **FastAPI**: High-performance web framework to expose risk calculation APIs.  
-- **QuantLib (C++ / Python bindings)**: Industry-standard quantitative finance library for yield curves, bond pricing, and risk measures.  
-- **arch**: GARCH volatility forecasting library.  
-- **NumPy / Pandas / SciPy**: Numerical computing and statistical analysis.  
-- **C++ Extensions**: For performance-critical routines in curve construction and simulation.  
+- Python 3.13
+- FastAPI
+- SQLAlchemy
+- Alembic
+- PostgreSQL
+- Pandas
+- NumPy
+- SciPy
+- QuantLib
+- Pydantic
 
-### **Frontend**  
-- **React**: JavaScript library for building a responsive and modular user interface.  
-- **TypeScript**: Type-safe, robust frontend development.  
-- **Recharts / Plotly**: For interactive yield curve plots, VaR histograms, and heatmaps of concentration risk.  
-- **TailwindCSS**: Utility-first CSS framework for clean and modern UI styling.  
+### Frontend
 
-### **Database / Data Layer**  
-- **MongoDB**: Stores market data, portfolio holdings, yield curves, and simulation results.  
-- **JSON Schemas**: Enforce a standardized contract between backend APIs and frontend consumers.  
-- **External APIs**:  
-  - **FRED API** → Free economic data (Treasury yields, benchmarks).  
-  - **Alpaca API** →→→ Demo testing for my own portfolio and positions.
-  - **Market / Exchange APIs** → For trading volumes and open interest (concentration risk).  
-  - **Mock Portfolio Generator** → For testing and backfilling scenarios.  
+- React
+- TypeScript
+- Plotly
 
-### **Infrastructure**  
-- **Docker**: Containerization for backend and frontend services.  
-- **CI/CD Pipelines**: GitHub Actions or GitLab CI for automated testing, build, and deployment.  
-- **Kubernetes (optional future extension)**: Orchestration for scaling Monte Carlo simulations and risk services.  
-- **Logging & Monitoring**: Structured logs via Python’s `logging` + Prometheus/Grafana for metrics.  
+### Infrastructure and quality
 
----
+- Docker
+- Docker Compose
+- uv
+- Pytest
+- Ruff
+- MyPy
+- GitHub Actions
 
-## 🔹 Example Use Cases  
-- **Fixed Income Desk:** Stress-test portfolio DV01 under yield curve shifts.  
-- **Compliance / Risk:** Identify outsized positions that move markets.  
-- **Risk Management:** Report 99% Monte Carlo VaR to senior management.  
-- **Research:** Fit GARCH models to interest rates or FX returns to test volatility persistence.  
+## Project structure
 
----
+```text
+Risk-Analytics-Suite/
+├── Backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── analytics/
+│   │   ├── database/
+│   │   ├── integrations/
+│   │   ├── repositories/
+│   │   ├── schemas/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── main.py
+│   ├── alembic/
+│   ├── tests/
+│   └── alembic.ini
+├── Frontend/
+├── data/
+├── docs/
+│   ├── api.md
+│   └── architecture.md
+├── scripts/
+├── docker-compose.yml
+├── pyproject.toml
+└── README.md
+```
 
-## 📘 What is GARCH?  
+## Quick start
 
-**GARCH (Generalized Autoregressive Conditional Heteroskedasticity)** is a statistical model that estimates **time-varying volatility** in financial markets.  
+### Prerequisites
 
-Key ideas:  
-- Volatility is not constant — markets experience **clusters of high and low volatility**.  
-- GARCH uses past **returns and past volatility** to forecast future volatility.  
-- GARCH(1,1) is the most common form, balancing simplicity with accuracy.  
+- Python 3.13+
+- uv
+- Docker
+- Docker Compose
+- Git
 
-### 🔢 Formula (GARCH(1,1))  
+### Install dependencies
 
-The conditional variance (σ²ₜ) is modeled as:  
+```bash
+uv sync
+```
 
-$$
-\sigma_t^2 = \omega + \alpha \cdot \varepsilon_{t-1}^2 + \beta \cdot \sigma_{t-1}^2
-$$  
+### Configure environment variables
 
-Where:  
-- **σ²ₜ** = forecast variance at time *t*  
-- **ω** = long-run variance (baseline level of volatility)  
-- **α** = weight on yesterday’s squared shock (**ε²**) → “news” impact  
-- **β** = weight on yesterday’s variance (**σ²**) → “volatility persistence”  
+Create `.env` in the repository root:
 
-### 📈 Why use GARCH in this suite?  
-- In **Monte Carlo VaR Engine** → feeds **time-varying volatility forecasts** into simulations, improving tail risk accuracy.  
-- In **Fixed Income Dashboard** → overlays volatility-adjusted DV01 sensitivity under turbulent conditions.  
-- In **Concentration Risk Monitor** → adjusts alerts dynamically when GARCH predicts volatility spikes, highlighting periods when concentrated positions are riskiest.  
+```env
+DATABASE_URL=postgresql+psycopg://risk_user:risk_password@localhost:5432/risk_analytics
+ALPACA_API_KEY=
+ALPACA_SECRET_KEY=
+ALPACA_PAPER=true
+FRED_API_KEY=
+```
 
-This makes GARCH especially valuable for **risk managers and researchers** seeking realistic modeling of volatility dynamics.  
+Never commit `.env`.
 
+### Start PostgreSQL
 
----
+```bash
+docker compose up -d
+```
 
-## 🔹 Future Extensions  
-- **DCC-GARCH** for modeling time-varying correlations.  
-- Stress testing (historical scenarios, macro shocks).  
-- Liquidity-adjusted VaR (L-VaR).  
-- Machine learning models for curve interpolation & risk forecasting.  
-- Unified reporting dashboard across all three modules.  
+### Apply migrations
 
----
+```bash
+uv run alembic -c Backend/alembic.ini upgrade head
+```
 
-⚡ With this Risk Analytics Suite, you gain **three orthogonal lenses** on portfolio risk:  
-- **Sensitivity (DV01 & Yield Curves)**  
-- **Concentration (Market Share Risk)**  
-- **Probabilistic Loss (Monte Carlo VaR with GARCH)**  
+### Start FastAPI
 
----
+```bash
+uv run uvicorn Backend.app.main:app --reload
+```
 
-## 📦 Getting Started  
+Swagger UI:
 
-### Prerequisites  
-Make sure you have the following installed:  
-* [Git](https://git-scm.com/)  
-* [Docker](https://www.docker.com/get-started)  
-* [Docker Compose](https://docs.docker.com/compose/install/)  
+```text
+http://127.0.0.1:8000/docs
+```
 
-### Installation  
+## Development commands
 
-1. **Clone the repository:**  
-   ```sh
-   git clone https://github.com/your-username/your-repository.git
-   cd your-repository
+```bash
+uv run pytest
+uv run pytest --cov=Backend.app
+uv run ruff check Backend
+uv run ruff format Backend
+uv run mypy Backend
+```
+
+## Current status
+
+| Module | Status |
+|---|---|
+| Backend foundation | Complete |
+| PostgreSQL and migrations | Complete |
+| Portfolio management | In progress |
+| CSV portfolio import | In progress |
+| Alpaca import | Planned |
+| Market data | Planned |
+| Portfolio analytics | Planned |
+| Fixed-income analytics | Planned |
+| Risk engine | Planned |
+| Dashboard | Planned |
+
+## MVP scope
+
+The first production-style version will support:
+
+- Portfolio and position management
+- CSV, Alpaca and Freetrade imports
+- Historical prices and market data
+- Portfolio valuation and P&L
+- Returns, volatility, correlation and covariance
+- Exposure and concentration analysis
+- Duration, convexity, DV01, PV01 and CS01
+- Historical, parametric and Monte Carlo VaR
+- Expected Shortfall
+- Stress testing
+- Interactive dashboards
+
+## Documentation
+
+- [Architecture](docs/architecture.md)
+- [API reference](docs/api.md)
+
+## License
+
+This project is licensed under the MIT License.
