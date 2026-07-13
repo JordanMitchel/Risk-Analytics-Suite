@@ -25,7 +25,7 @@ Provides portfolio managers and risk analysts with a consolidated view of **yiel
 - **Portfolio Aggregation**: Consolidated fixed income risk measures across holdings.  
 - **Market Data Processing**: Yield curve bootstrapping from deposits, futures, swaps, and bonds.  
 - **Volatility Overlays**: Incorporates **GARCH-based volatility forecasts** to stress-test interest rate sensitivity under varying market regimes.  
-- **Modern Web Stack**: Python (FastAPI, QuantLib) backend + React/TypeScript frontend.  
+- **Modern Web Stack**: Python (FastAPI, QuantLib) backend + Plotly frontend.  
 - **Containerized Architecture**: Dockerized setup for consistent deployment.  
 
 ---
@@ -94,6 +94,7 @@ Uses simulated market scenarios to estimate potential portfolio losses at chosen
 - **JSON Schemas**: Enforce a standardized contract between backend APIs and frontend consumers.  
 - **External APIs**:  
   - **FRED API** → Free economic data (Treasury yields, benchmarks).  
+  - **Alpaca API** →→→ Demo testing for my own portfolio and positions.
   - **Market / Exchange APIs** → For trading volumes and open interest (concentration risk).  
   - **Mock Portfolio Generator** → For testing and backfilling scenarios.  
 
