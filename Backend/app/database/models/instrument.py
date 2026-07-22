@@ -38,6 +38,17 @@ class InstrumentModel(Base):
         nullable=True,
     )
 
+    figi_global: Mapped[str | None] = mapped_column(
+        String(30),
+        unique=True,
+        nullable=True,
+    )
+
+    active: Mapped[bool] = mapped_column(
+        nullable=False,
+        default=True,
+    )
+
     name: Mapped[str] = mapped_column(
         String(150),
         nullable=False,

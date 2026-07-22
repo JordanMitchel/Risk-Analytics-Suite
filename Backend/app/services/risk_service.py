@@ -1,0 +1,13 @@
+class RiskService:
+
+    def get_market_exposure(self, portfolio_id):
+        ...
+
+    def get_volatility(self, portfolio_id):
+        ...
+
+    def get_hedge_requirement(self, portfolio_id):
+        ...
+
+    def recommend_hedge_asset(self, portfolio_id):
+        ...
