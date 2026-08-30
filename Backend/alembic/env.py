@@ -1,3 +1,9 @@
+from Backend.app.database.base import Base
+from Backend.app.database.models.portfolio import PortfolioModel
+from Backend.app.database.models.instrument import InstrumentModel
+from Backend.app.database.models.position import PositionModel
+from Backend.app.database.models.price import PriceModel
+from Backend.app.database.models.risk_result import RiskResultModel
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -6,7 +12,6 @@ from sqlalchemy import pool
 from alembic import context
 
 from Backend.app.config import get_settings
-from Backend.app.database.base import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
